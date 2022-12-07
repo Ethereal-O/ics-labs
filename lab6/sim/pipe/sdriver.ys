@@ -1,0 +1,261 @@
+#######################################################################
+# Test for copying block of size 4;
+#######################################################################
+	.pos 0
+main:	irmovq Stack, %rsp  	# Set up stack pointer
+
+	# Set up arguments for copy function and then invoke it
+	irmovq $4, %rdx		# src and dst have 4 elements
+	irmovq dest, %rsi	# dst array
+	irmovq src, %rdi	# src array
+	call ncopy		 
+	halt			# should halt with num nonzeros in %rax
+StartFun:
+#/* $begin ncopy-ys */
+##################################################################
+# ncopy.ys - Copy a src block of len words to dst.
+# Return the number of positive words (>0) contained in src.
+#
+# Include your name and ID here.
+# name:JingKai Yang ID:520021910550
+# Describe how and why you modified the baseline code.
+# 1. add instruction iaddq to make two instructions to one
+# 2. solve load-use hazard to decrease bubbles
+# 3. make expansion to eliminate loop inefficiencies
+##################################################################
+# Do not modify this portion
+# Function prologue.
+# %rdi = src, %rsi = dst, %rdx = len
+ncopy:
+
+##################################################################
+# You can modify this portion
+	# Loop header
+	xorq %rax, %rax		# count = 0
+	iaddq $-9, %rdx		# length -= 9
+	jl Remain
+
+# Nine_expansion
+Nine_expansion:
+	mrmovq (%rdi), %r10 #read first val from src
+	mrmovq 8(%rdi), %r11 #read second val from src
+	rmmovq %r10,(%rsi) #store first val to dst
+	
+	andq %r10, %r10 #val1 <= 0?
+	jle Nine_notadd1
+	iaddq $1, %rax
+
+Nine_notadd1:
+	mrmovq 16(%rdi), %r10 #read third val from src
+	rmmovq %r11,8(%rsi) #store second val to dst
+
+	andq %r11, %r11 # val2 <= 0?
+	jle Nine_notadd2
+	iaddq $1, %rax
+
+Nine_notadd2:
+	mrmovq 24(%rdi),%r11 #read fourth val from src
+	rmmovq %r10,16(%rsi) #store third val to dst
+
+	andq %r10, %r10 # val3 <= 0?
+	jle Nine_notadd3
+	iaddq $1, %rax
+
+Nine_notadd3:
+	mrmovq 32(%rdi), %r10 #read fifth val from src
+	rmmovq %r11,24(%rsi) #store fourth val to dst
+
+	andq %r11, %r11 # val4 <= 0?
+	jle Nine_notadd4
+	iaddq $1, %rax
+
+Nine_notadd4:
+	mrmovq 40(%rdi), %r11 #read sixth val from src
+	rmmovq %r10,32(%rsi) #store fifth val to dst
+
+	andq %r10, %r10 #val5 <= 0?
+	jle Nine_notadd5
+	iaddq $1, %rax
+
+Nine_notadd5:
+	mrmovq 48(%rdi), %r10 #read seventh val from src
+	rmmovq %r11,40(%rsi) #store sixth val to dst
+
+	andq %r11, %r11 # val6 <= 0?
+	jle Nine_notadd6
+	iaddq $1, %rax
+
+Nine_notadd6:
+	mrmovq 56(%rdi), %r11 #read eighth val from src
+	rmmovq %r10,48(%rsi) #store seventh val to dst
+
+	andq %r10, %r10 # val7 <= 0?
+	jle Nine_notadd7
+	iaddq $1, %rax
+
+Nine_notadd7:
+	mrmovq 64(%rdi), %r10 #read ninth val from src
+	rmmovq %r11,56(%rsi) #store eighth val to dst
+
+	andq %r11, %r11 # val8 <= 0?
+	jle Nine_notadd8
+	iaddq $1, %rax
+
+Nine_notadd8:
+	rmmovq %r10,64(%rsi) #store ninth val to dst
+
+	andq %r10, %r10 # val9 <= 0?
+	jle Nine_notadd9
+	iaddq $1, %rax
+
+Nine_notadd9:
+	iaddq $72, %rdi
+	iaddq $72, %rsi
+	iaddq $-9, %rdx
+	jge Nine_expansion
+
+Remain:
+	iaddq $5,%rdx
+	jge Remain_High
+
+Remain_Low:
+	iaddq $3,%rdx
+	jg Remain_Low_High
+
+Remain_Low_Low:
+	jl Done
+	mrmovq (%rdi),%r10
+	je One
+
+Remain_Low_High:
+	iaddq $-1,%rdx
+	mrmovq 8(%rdi),%r11
+	je Two
+	mrmovq 16(%rdi),%r10
+	jg Three_1
+
+Remain_High:
+	iaddq $-3,%rdx
+	jge Remain_High_High
+
+Remain_High_Low:
+	iaddq $2,%rdx
+	mrmovq 24(%rdi),%r11
+	jl Four
+	mrmovq 32(%rdi),%r10
+	je Five_1
+	mrmovq 40(%rdi),%r11
+	jg Six_1
+
+Remain_High_High:
+	mrmovq 48(%rdi),%r10
+	je Seven
+	mrmovq 56(%rdi),%r11
+	jg Eight_1
+
+Eight_1:
+	rmmovq %r11,56(%rsi)
+	andq %r11, %r11
+	jle Seven
+	iaddq $1, %rax
+Seven:
+	mrmovq 40(%rdi),%r11
+Seven_1:
+	rmmovq %r10,48(%rsi)
+	andq %r10, %r10
+	jle Six
+	iaddq $1, %rax
+Six:
+	mrmovq 32(%rdi),%r10
+Six_1:
+	rmmovq %r11,40(%rsi)
+	andq %r11, %r11
+	jle Five
+	iaddq $1, %rax
+Five:
+	mrmovq 24(%rdi),%r11
+Five_1:
+	rmmovq %r10,32(%rsi)
+	andq %r10, %r10
+	jle Four
+	iaddq $1, %rax
+Four:
+	mrmovq 16(%rdi),%r10
+Four_1:
+	rmmovq %r11,24(%rsi)
+	andq %r11, %r11
+	jle Three
+	iaddq $1, %rax
+Three:
+	mrmovq 8(%rdi),%r11
+Three_1:
+	rmmovq %r10,16(%rsi)
+	andq %r10, %r10
+	jle Two
+	iaddq $1, %rax
+Two:
+	mrmovq (%rdi),%r10
+	rmmovq %r11,8(%rsi)
+	andq %r11, %r11
+	jle One
+	iaddq $1, %rax
+One:
+	rmmovq %r10,(%rsi)
+	andq %r10, %r10
+	jle Done
+	iaddq $1, %rax
+
+
+##################################################################
+# Do not modify the following section of code
+# Function epilogue.
+Done:
+	ret
+##################################################################
+# Keep the following label at the end of your function
+End:
+#/* $end ncopy-ys */
+EndFun:
+
+###############################
+# Source and destination blocks 
+###############################
+	.align 8
+src:
+	.quad 1
+	.quad -2
+	.quad -3
+	.quad 4
+	.quad 0xbcdefa # This shouldn't get moved
+
+	.align 16
+Predest:
+	.quad 0xbcdefa
+dest:
+	.quad 0xcdefab
+	.quad 0xcdefab
+	.quad 0xcdefab
+	.quad 0xcdefab
+Postdest:
+	.quad 0xdefabc
+
+.align 8
+# Run time stack
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+	.quad 0
+
+Stack:

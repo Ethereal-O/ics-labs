@@ -1,0 +1,7 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/ethereal/Programs/CorC++/icslabs/lab9'
+gcc -Wall -g   -c -o proxy.o proxy.c
+gcc -Wall -g   -c -o csapp.o csapp.c
+gcc -pthread  proxy.o csapp.o   -o proxy
+make: Leaving directory '/home/ethereal/Programs/CorC++/icslabs/lab9'
+ 

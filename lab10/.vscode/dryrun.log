@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/ethereal/Programs/CorC++/icslabs/lab10'
+make: 'mdriver' is up to date.
+make: Leaving directory '/home/ethereal/Programs/CorC++/icslabs/lab10'
+ 

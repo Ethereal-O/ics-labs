@@ -1,0 +1,8 @@
+401d9c:movl %eax,%edi
+401db1:pop %rax
+401dbd:movq %rax,%rdi
+401dd5:lea (%rdi,%rsi,1),%rax
+401dee:movl %edx,%esi
+401e06:movl %eax,%ecx
+401e5c:movl %ecx,%edx
+401e00:movq %rsp,%rax

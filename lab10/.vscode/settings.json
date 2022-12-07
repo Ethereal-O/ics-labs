@@ -1,0 +1,7 @@
+{
+    "makefile.extensionOutputFolder": "./.vscode",
+    "files.associations": {
+        "mm.h": "c",
+        "memlib.h": "c"
+    }
+}

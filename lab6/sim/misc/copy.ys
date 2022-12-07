@@ -1,0 +1,51 @@
+#/* $begin header-comment */
+#name:JingKai Yang ID:520021910550
+#/* $begin copy_block-ys */
+#Execution begins at address 0
+    .pos 0
+    irmovq stack,%rsp
+    call main
+    halt
+
+.align 8 
+# Source block 
+src:
+    .quad 0x00a 
+    .quad 0x0b0 
+    .quad 0xc00
+# Destination block 
+dest:
+    .quad 0x111 
+    .quad 0x222 
+    .quad 0x333
+
+main:
+    irmovq $0,%rax
+    irmovq src,%rbx
+    irmovq dest,%rcx
+    irmovq $3,%rdx
+    irmovq $0,%rbp
+    irmovq $1,%rsi
+    irmovq $8,%rdi
+    irmovq $0,%r8
+
+copy_block:
+    addq %r8,%rdx
+    je end
+    call loop
+
+end:
+    ret
+
+loop:
+    mrmovq (%rbx),%rbp
+    addq %rdi,%rbx
+    rmmovq %rbp,(%rcx)
+    addq %rdi,%rcx
+    xorq %rbp,%rax
+    subq %rsi,%rdx
+    jne loop
+    ret
+
+    .pos 0x100
+stack:

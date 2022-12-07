@@ -1,0 +1,51 @@
+                            | #/* $begin header-comment */
+                            | #name:JingKai Yang ID:520021910550
+                            | #/* $begin copy_block-ys */
+                            | #Execution begins at address 0
+0x000:                      |     .pos 0
+0x000: 30f40001000000000000 |     irmovq stack,%rsp
+0x00a: 804800000000000000   |     call main
+0x013: 00                   |     halt
+                            | 
+0x018:                      | .align 8 
+                            | # Source block 
+0x018:                      | src:
+0x018: 0a00000000000000     |     .quad 0x00a 
+0x020: b000000000000000     |     .quad 0x0b0 
+0x028: 000c000000000000     |     .quad 0xc00
+                            | # Destination block 
+0x030:                      | dest:
+0x030: 1101000000000000     |     .quad 0x111 
+0x038: 2202000000000000     |     .quad 0x222 
+0x040: 3303000000000000     |     .quad 0x333
+                            | 
+0x048:                      | main:
+0x048: 30f00000000000000000 |     irmovq $0,%rax
+0x052: 30f31800000000000000 |     irmovq src,%rbx
+0x05c: 30f13000000000000000 |     irmovq dest,%rcx
+0x066: 30f20300000000000000 |     irmovq $3,%rdx
+0x070: 30f50000000000000000 |     irmovq $0,%rbp
+0x07a: 30f60100000000000000 |     irmovq $1,%rsi
+0x084: 30f70800000000000000 |     irmovq $8,%rdi
+0x08e: 30f80000000000000000 |     irmovq $0,%r8
+                            | 
+0x098:                      | copy_block:
+0x098: 6082                 |     addq %r8,%rdx
+0x09a: 73ac00000000000000   |     je end
+0x0a3: 80ad00000000000000   |     call loop
+                            | 
+0x0ac:                      | end:
+0x0ac: 90                   |     ret
+                            | 
+0x0ad:                      | loop:
+0x0ad: 50530000000000000000 |     mrmovq (%rbx),%rbp
+0x0b7: 6073                 |     addq %rdi,%rbx
+0x0b9: 40510000000000000000 |     rmmovq %rbp,(%rcx)
+0x0c3: 6071                 |     addq %rdi,%rcx
+0x0c5: 6350                 |     xorq %rbp,%rax
+0x0c7: 6162                 |     subq %rsi,%rdx
+0x0c9: 74ad00000000000000   |     jne loop
+0x0d2: 90                   |     ret
+                            | 
+0x100:                      |     .pos 0x100
+0x100:                      | stack:

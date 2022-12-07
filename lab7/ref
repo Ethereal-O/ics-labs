@@ -1,0 +1,91 @@
+Reference output:
+#
+# trace13.txt - Restart every stopped process in process group
+#
+tsh> ./mysplit 4
+Job [1] (13282) stopped by signal 20
+tsh> jobs
+[1] (13282) Stopped ./mysplit 4 
+tsh> /bin/ps a
+  PID TTY      STAT   TIME COMMAND
+  612 pts/0    Ss+    0:00 sh -c "$VSCODE_WSL_EXT_LOCATION/scripts/wslServer.sh" 8dfae7a5cd50421d10cd99cb873990460525a898 stable code-server .vscode-server --host=127.0.0.1 --port=0 --connection-token=3244585169-3520562180 --use-host-proxy --without-browser-env-var --disable-websocket-compression --accept-server-license-terms --telemetry-level=all
+  613 pts/0    S+     0:00 sh /mnt/c/Users/Ethereal/.vscode/extensions/ms-vscode-remote.remote-wsl-0.66.0/scripts/wslServer.sh 8dfae7a5cd50421d10cd99cb873990460525a898 stable code-server .vscode-server --host=127.0.0.1 --port=0 --connection-token=3244585169-3520562180 --use-host-proxy --without-browser-env-var --disable-websocket-compression --accept-server-license-terms --telemetry-level=all
+  638 pts/0    S+     0:00 sh /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/bin/code-server --host=127.0.0.1 --port=0 --connection-token=3244585169-3520562180 --use-host-proxy --without-browser-env-var --disable-websocket-compression --accept-server-license-terms --telemetry-level=all
+  642 pts/0    Sl+    0:23 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/out/server-main.js --host=127.0.0.1 --port=0 --connection-token=3244585169-3520562180 --use-host-proxy --without-browser-env-var --disable-websocket-compression --accept-server-license-terms --telemetry-level=all
+  653 pts/0    Sl+    0:28 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/out/bootstrap-fork --type=ptyHost
+  685 pts/1    Ssl+   0:04 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node -e  const net = require('net'); process.stdin.pause(); const client = net.createConnection({ host: '127.0.0.1', port: 32895 }, () => { client.pipe(process.stdout); process.stdin.pipe(client); }); client.on('close', function (hadError) { console.error(hadError ? 'Remote close with error' : 'Remote close'); process.exit(hadError ? 1 : 0); }); client.on('error', function (err) { process.stderr.write(err && (err.stack || err.message) || String(err)); });
+  694 pts/2    Ssl+   0:15 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node -e  const net = require('net'); process.stdin.pause(); const client = net.createConnection({ host: '127.0.0.1', port: 32895 }, () => { client.pipe(process.stdout); process.stdin.pipe(client); }); client.on('close', function (hadError) { console.error(hadError ? 'Remote close with error' : 'Remote close'); process.exit(hadError ? 1 : 0); }); client.on('error', function (err) { process.stderr.write(err && (err.stack || err.message) || String(err)); });
+  701 pts/0    Sl+    0:02 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/out/bootstrap-fork --type=fileWatcher
+  712 pts/0    Sl+    3:01 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=true
+  765 pts/0    Sl+    0:51 /home/ethereal/.vscode-server/extensions/ms-vscode.cpptools-1.9.7-linux-x64/bin/cpptools
+ 4365 pts/3    Ss     0:00 /usr/bin/bash
+ 8403 pts/0    Sl+    0:01 /home/ethereal/.vscode-server/extensions/ms-vscode.cpptools-1.9.7-linux-x64/bin/cpptools-srv 765 {6A2DC1B1-1366-4B13-AFC6-5D8744933CF0}
+11198 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace09.txt -s ./tsh -a -p
+11199 pts/3    S      0:00 ./tsh -p
+11201 pts/3    Z      0:00 [myspin] <defunct>
+11203 pts/3    Z      0:00 [myspin] <defunct>
+11206 pts/3    Z      0:00 [echo] <defunct>
+11255 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace10.txt -s ./tsh -a -p
+11256 pts/3    S      0:00 ./tsh -p
+11258 pts/3    Z      0:00 [myspin] <defunct>
+11455 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace13.txt -s ./tsh -a -p
+11456 pts/3    S      0:00 ./tsh -p
+11458 pts/3    Z      0:00 [mysplit] <defunct>
+11521 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace14.txt -s ./tsh -a -p
+11522 pts/3    S      0:00 ./tsh -p
+11526 pts/3    Z      0:00 [myspin] <defunct>
+11530 pts/3    Z      0:00 [echo] <defunct>
+11639 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace15.txt -s ./tsh -a -p
+11640 pts/3    S      0:00 ./tsh -p
+11658 pts/3    Z      0:00 [myspin] <defunct>
+11660 pts/3    Z      0:00 [myspin] <defunct>
+12694 pts/3    S+     0:00 grade-shlab.pl
+13273 pts/3    S+     0:00 sh -c cd /tmp/tsh.c.12694; ./checktsh.pl -e -t trace13.txt
+13274 pts/3    S+     0:00 /usr/bin/perl ./checktsh.pl -e -t trace13.txt
+13278 pts/3    S+     0:00 sh -c ./sdriver.pl -t trace13.txt -s ./tshref -a '-p'
+13279 pts/3    S+     0:00 /usr/bin/perl ./sdriver.pl -t trace13.txt -s ./tshref -a -p
+13280 pts/3    S+     0:00 ./tshref -p
+13282 pts/3    T      0:00 ./mysplit 4
+13283 pts/3    T      0:00 ./mysplit 4
+13286 pts/3    R      0:00 /bin/ps a
+tsh> fg %1
+tsh> /bin/ps a
+  PID TTY      STAT   TIME COMMAND
+  612 pts/0    Ss+    0:00 sh -c "$VSCODE_WSL_EXT_LOCATION/scripts/wslServer.sh" 8dfae7a5cd50421d10cd99cb873990460525a898 stable code-server .vscode-server --host=127.0.0.1 --port=0 --connection-token=3244585169-3520562180 --use-host-proxy --without-browser-env-var --disable-websocket-compression --accept-server-license-terms --telemetry-level=all
+  613 pts/0    S+     0:00 sh /mnt/c/Users/Ethereal/.vscode/extensions/ms-vscode-remote.remote-wsl-0.66.0/scripts/wslServer.sh 8dfae7a5cd50421d10cd99cb873990460525a898 stable code-server .vscode-server --host=127.0.0.1 --port=0 --connection-token=3244585169-3520562180 --use-host-proxy --without-browser-env-var --disable-websocket-compression --accept-server-license-terms --telemetry-level=all
+  638 pts/0    S+     0:00 sh /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/bin/code-server --host=127.0.0.1 --port=0 --connection-token=3244585169-3520562180 --use-host-proxy --without-browser-env-var --disable-websocket-compression --accept-server-license-terms --telemetry-level=all
+  642 pts/0    Sl+    0:23 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/out/server-main.js --host=127.0.0.1 --port=0 --connection-token=3244585169-3520562180 --use-host-proxy --without-browser-env-var --disable-websocket-compression --accept-server-license-terms --telemetry-level=all
+  653 pts/0    Sl+    0:28 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/out/bootstrap-fork --type=ptyHost
+  685 pts/1    Ssl+   0:04 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node -e  const net = require('net'); process.stdin.pause(); const client = net.createConnection({ host: '127.0.0.1', port: 32895 }, () => { client.pipe(process.stdout); process.stdin.pipe(client); }); client.on('close', function (hadError) { console.error(hadError ? 'Remote close with error' : 'Remote close'); process.exit(hadError ? 1 : 0); }); client.on('error', function (err) { process.stderr.write(err && (err.stack || err.message) || String(err)); });
+  694 pts/2    Ssl+   0:15 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node -e  const net = require('net'); process.stdin.pause(); const client = net.createConnection({ host: '127.0.0.1', port: 32895 }, () => { client.pipe(process.stdout); process.stdin.pipe(client); }); client.on('close', function (hadError) { console.error(hadError ? 'Remote close with error' : 'Remote close'); process.exit(hadError ? 1 : 0); }); client.on('error', function (err) { process.stderr.write(err && (err.stack || err.message) || String(err)); });
+  701 pts/0    Sl+    0:02 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/out/bootstrap-fork --type=fileWatcher
+  712 pts/0    Sl+    3:01 /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/node /home/ethereal/.vscode-server/bin/8dfae7a5cd50421d10cd99cb873990460525a898/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=true
+  765 pts/0    Sl+    0:51 /home/ethereal/.vscode-server/extensions/ms-vscode.cpptools-1.9.7-linux-x64/bin/cpptools
+ 4365 pts/3    Ss     0:00 /usr/bin/bash
+ 8403 pts/0    Sl+    0:01 /home/ethereal/.vscode-server/extensions/ms-vscode.cpptools-1.9.7-linux-x64/bin/cpptools-srv 765 {6A2DC1B1-1366-4B13-AFC6-5D8744933CF0}
+11198 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace09.txt -s ./tsh -a -p
+11199 pts/3    S      0:00 ./tsh -p
+11201 pts/3    Z      0:00 [myspin] <defunct>
+11203 pts/3    Z      0:00 [myspin] <defunct>
+11206 pts/3    Z      0:00 [echo] <defunct>
+11255 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace10.txt -s ./tsh -a -p
+11256 pts/3    S      0:00 ./tsh -p
+11258 pts/3    Z      0:00 [myspin] <defunct>
+11455 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace13.txt -s ./tsh -a -p
+11456 pts/3    S      0:00 ./tsh -p
+11458 pts/3    Z      0:00 [mysplit] <defunct>
+11521 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace14.txt -s ./tsh -a -p
+11522 pts/3    S      0:00 ./tsh -p
+11526 pts/3    Z      0:00 [myspin] <defunct>
+11530 pts/3    Z      0:00 [echo] <defunct>
+11639 pts/3    S      0:00 /usr/bin/perl ./sdriver.pl -t trace15.txt -s ./tsh -a -p
+11640 pts/3    S      0:00 ./tsh -p
+11658 pts/3    Z      0:00 [myspin] <defunct>
+11660 pts/3    Z      0:00 [myspin] <defunct>
+12694 pts/3    S+     0:00 grade-shlab.pl
+13273 pts/3    S+     0:00 sh -c cd /tmp/tsh.c.12694; ./checktsh.pl -e -t trace13.txt
+13274 pts/3    S+     0:00 /usr/bin/perl ./checktsh.pl -e -t trace13.txt
+13278 pts/3    S+     0:00 sh -c ./sdriver.pl -t trace13.txt -s ./tshref -a '-p'
+13279 pts/3    S+     0:00 /usr/bin/perl ./sdriver.pl -t trace13.txt -s ./tshref -a -p
+13280 pts/3    S+     0:00 ./tshref -p
+13325 pts/3    R      0:00 /bin/ps a

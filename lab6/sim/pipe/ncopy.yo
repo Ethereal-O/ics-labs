@@ -1,0 +1,204 @@
+                            | #/* $begin ncopy-ys */
+                            | ##################################################################
+                            | # ncopy.ys - Copy a src block of len words to dst.
+                            | # Return the number of positive words (>0) contained in src.
+                            | #
+                            | # Include your name and ID here.
+                            | # name:JingKai Yang ID:520021910550
+                            | # Describe how and why you modified the baseline code.
+                            | # 1. add instruction iaddq to make two instructions to one
+                            | # 2. solve load-use hazard to decrease bubbles
+                            | # 3. make expansion to eliminate loop inefficiencies
+                            | ##################################################################
+                            | # Do not modify this portion
+                            | # Function prologue.
+                            | # %rdi = src, %rsi = dst, %rdx = len
+0x000:                      | ncopy:
+                            | 
+                            | ##################################################################
+                            | # You can modify this portion
+                            | 	# Loop header
+0x000: 6300                 | 	xorq %rax, %rax		# count = 0
+0x002: c0f2f7ffffffffffffff | 	iaddq $-9, %rdx		# length -= 9
+0x00c: 72ad01000000000000   | 	jl Remain
+                            | 
+                            | # Nine_expansion
+0x015:                      | Nine_expansion:
+0x015: 50a70000000000000000 | 	mrmovq (%rdi), %r10 #read first val from src
+0x01f: 50b70800000000000000 | 	mrmovq 8(%rdi), %r11 #read second val from src
+0x029: 40a60000000000000000 | 	rmmovq %r10,(%rsi) #store first val to dst
+                            | 	
+0x033: 62aa                 | 	andq %r10, %r10 #val1 <= 0?
+0x035: 714800000000000000   | 	jle Nine_notadd1
+0x03e: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+0x048:                      | Nine_notadd1:
+0x048: 50a71000000000000000 | 	mrmovq 16(%rdi), %r10 #read third val from src
+0x052: 40b60800000000000000 | 	rmmovq %r11,8(%rsi) #store second val to dst
+                            | 
+0x05c: 62bb                 | 	andq %r11, %r11 # val2 <= 0?
+0x05e: 717100000000000000   | 	jle Nine_notadd2
+0x067: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+0x071:                      | Nine_notadd2:
+0x071: 50b71800000000000000 | 	mrmovq 24(%rdi),%r11 #read fourth val from src
+0x07b: 40a61000000000000000 | 	rmmovq %r10,16(%rsi) #store third val to dst
+                            | 
+0x085: 62aa                 | 	andq %r10, %r10 # val3 <= 0?
+0x087: 719a00000000000000   | 	jle Nine_notadd3
+0x090: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+0x09a:                      | Nine_notadd3:
+0x09a: 50a72000000000000000 | 	mrmovq 32(%rdi), %r10 #read fifth val from src
+0x0a4: 40b61800000000000000 | 	rmmovq %r11,24(%rsi) #store fourth val to dst
+                            | 
+0x0ae: 62bb                 | 	andq %r11, %r11 # val4 <= 0?
+0x0b0: 71c300000000000000   | 	jle Nine_notadd4
+0x0b9: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+0x0c3:                      | Nine_notadd4:
+0x0c3: 50b72800000000000000 | 	mrmovq 40(%rdi), %r11 #read sixth val from src
+0x0cd: 40a62000000000000000 | 	rmmovq %r10,32(%rsi) #store fifth val to dst
+                            | 
+0x0d7: 62aa                 | 	andq %r10, %r10 #val5 <= 0?
+0x0d9: 71ec00000000000000   | 	jle Nine_notadd5
+0x0e2: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+0x0ec:                      | Nine_notadd5:
+0x0ec: 50a73000000000000000 | 	mrmovq 48(%rdi), %r10 #read seventh val from src
+0x0f6: 40b62800000000000000 | 	rmmovq %r11,40(%rsi) #store sixth val to dst
+                            | 
+0x100: 62bb                 | 	andq %r11, %r11 # val6 <= 0?
+0x102: 711501000000000000   | 	jle Nine_notadd6
+0x10b: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+0x115:                      | Nine_notadd6:
+0x115: 50b73800000000000000 | 	mrmovq 56(%rdi), %r11 #read eighth val from src
+0x11f: 40a63000000000000000 | 	rmmovq %r10,48(%rsi) #store seventh val to dst
+                            | 
+0x129: 62aa                 | 	andq %r10, %r10 # val7 <= 0?
+0x12b: 713e01000000000000   | 	jle Nine_notadd7
+0x134: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+0x13e:                      | Nine_notadd7:
+0x13e: 50a74000000000000000 | 	mrmovq 64(%rdi), %r10 #read ninth val from src
+0x148: 40b63800000000000000 | 	rmmovq %r11,56(%rsi) #store eighth val to dst
+                            | 
+0x152: 62bb                 | 	andq %r11, %r11 # val8 <= 0?
+0x154: 716701000000000000   | 	jle Nine_notadd8
+0x15d: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+0x167:                      | Nine_notadd8:
+0x167: 40a64000000000000000 | 	rmmovq %r10,64(%rsi) #store ninth val to dst
+                            | 
+0x171: 62aa                 | 	andq %r10, %r10 # val9 <= 0?
+0x173: 718601000000000000   | 	jle Nine_notadd9
+0x17c: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+0x186:                      | Nine_notadd9:
+0x186: c0f74800000000000000 | 	iaddq $72, %rdi
+0x190: c0f64800000000000000 | 	iaddq $72, %rsi
+0x19a: c0f2f7ffffffffffffff | 	iaddq $-9, %rdx
+0x1a4: 751500000000000000   | 	jge Nine_expansion
+                            | 
+0x1ad:                      | Remain:
+0x1ad: c0f20500000000000000 | 	iaddq $5,%rdx
+0x1b7: 751f02000000000000   | 	jge Remain_High
+                            | 
+0x1c0:                      | Remain_Low:
+0x1c0: c0f20300000000000000 | 	iaddq $3,%rdx
+0x1ca: 76ef01000000000000   | 	jg Remain_Low_High
+                            | 
+0x1d3:                      | Remain_Low_Low:
+0x1d3: 72cf03000000000000   | 	jl Done
+0x1dc: 50a70000000000000000 | 	mrmovq (%rdi),%r10
+0x1e6: 73b003000000000000   | 	je One
+                            | 
+0x1ef:                      | Remain_Low_High:
+0x1ef: c0f2ffffffffffffffff | 	iaddq $-1,%rdx
+0x1f9: 50b70800000000000000 | 	mrmovq 8(%rdi),%r11
+0x203: 738703000000000000   | 	je Two
+0x20c: 50a71000000000000000 | 	mrmovq 16(%rdi),%r10
+0x216: 766803000000000000   | 	jg Three_1
+                            | 
+0x21f:                      | Remain_High:
+0x21f: c0f2fdffffffffffffff | 	iaddq $-3,%rdx
+0x229: 757502000000000000   | 	jge Remain_High_High
+                            | 
+0x232:                      | Remain_High_Low:
+0x232: c0f20200000000000000 | 	iaddq $2,%rdx
+0x23c: 50b71800000000000000 | 	mrmovq 24(%rdi),%r11
+0x246: 723503000000000000   | 	jl Four
+0x24f: 50a72000000000000000 | 	mrmovq 32(%rdi),%r10
+0x259: 731603000000000000   | 	je Five_1
+0x262: 50b72800000000000000 | 	mrmovq 40(%rdi),%r11
+0x26c: 76ed02000000000000   | 	jg Six_1
+                            | 
+0x275:                      | Remain_High_High:
+0x275: 50a73000000000000000 | 	mrmovq 48(%rdi),%r10
+0x27f: 73ba02000000000000   | 	je Seven
+0x288: 50b73800000000000000 | 	mrmovq 56(%rdi),%r11
+0x292: 769b02000000000000   | 	jg Eight_1
+                            | 
+0x29b:                      | Eight_1:
+0x29b: 40b63800000000000000 | 	rmmovq %r11,56(%rsi)
+0x2a5: 62bb                 | 	andq %r11, %r11
+0x2a7: 71ba02000000000000   | 	jle Seven
+0x2b0: c0f00100000000000000 | 	iaddq $1, %rax
+0x2ba:                      | Seven:
+0x2ba: 50b72800000000000000 | 	mrmovq 40(%rdi),%r11
+0x2c4:                      | Seven_1:
+0x2c4: 40a63000000000000000 | 	rmmovq %r10,48(%rsi)
+0x2ce: 62aa                 | 	andq %r10, %r10
+0x2d0: 71e302000000000000   | 	jle Six
+0x2d9: c0f00100000000000000 | 	iaddq $1, %rax
+0x2e3:                      | Six:
+0x2e3: 50a72000000000000000 | 	mrmovq 32(%rdi),%r10
+0x2ed:                      | Six_1:
+0x2ed: 40b62800000000000000 | 	rmmovq %r11,40(%rsi)
+0x2f7: 62bb                 | 	andq %r11, %r11
+0x2f9: 710c03000000000000   | 	jle Five
+0x302: c0f00100000000000000 | 	iaddq $1, %rax
+0x30c:                      | Five:
+0x30c: 50b71800000000000000 | 	mrmovq 24(%rdi),%r11
+0x316:                      | Five_1:
+0x316: 40a62000000000000000 | 	rmmovq %r10,32(%rsi)
+0x320: 62aa                 | 	andq %r10, %r10
+0x322: 713503000000000000   | 	jle Four
+0x32b: c0f00100000000000000 | 	iaddq $1, %rax
+0x335:                      | Four:
+0x335: 50a71000000000000000 | 	mrmovq 16(%rdi),%r10
+0x33f:                      | Four_1:
+0x33f: 40b61800000000000000 | 	rmmovq %r11,24(%rsi)
+0x349: 62bb                 | 	andq %r11, %r11
+0x34b: 715e03000000000000   | 	jle Three
+0x354: c0f00100000000000000 | 	iaddq $1, %rax
+0x35e:                      | Three:
+0x35e: 50b70800000000000000 | 	mrmovq 8(%rdi),%r11
+0x368:                      | Three_1:
+0x368: 40a61000000000000000 | 	rmmovq %r10,16(%rsi)
+0x372: 62aa                 | 	andq %r10, %r10
+0x374: 718703000000000000   | 	jle Two
+0x37d: c0f00100000000000000 | 	iaddq $1, %rax
+0x387:                      | Two:
+0x387: 50a70000000000000000 | 	mrmovq (%rdi),%r10
+0x391: 40b60800000000000000 | 	rmmovq %r11,8(%rsi)
+0x39b: 62bb                 | 	andq %r11, %r11
+0x39d: 71b003000000000000   | 	jle One
+0x3a6: c0f00100000000000000 | 	iaddq $1, %rax
+0x3b0:                      | One:
+0x3b0: 40a60000000000000000 | 	rmmovq %r10,(%rsi)
+0x3ba: 62aa                 | 	andq %r10, %r10
+0x3bc: 71cf03000000000000   | 	jle Done
+0x3c5: c0f00100000000000000 | 	iaddq $1, %rax
+                            | 
+                            | 
+                            | ##################################################################
+                            | # Do not modify the following section of code
+                            | # Function epilogue.
+0x3cf:                      | Done:
+0x3cf: 90                   | 	ret
+                            | ##################################################################
+                            | # Keep the following label at the end of your function
+0x3d0:                      | End:
+                            | #/* $end ncopy-ys */
